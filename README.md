@@ -1,3 +1,10 @@
+> **EVOLUTICS — SocioVerse Challenge 2026, Track C.** This fork modifies the SocioVerse2 platform
+> (branch-integrity fix, fork encoding fix, Action provenance fix, and a reusable validity-audit
+> collector) and adds the `persona_override` study. For the team's changes, one-command
+> reproduction, and the reproducibility and data-compliance statements, start at
+> [`README-EVOLUTICS.md`](README-EVOLUTICS.md) and [`REPRODUCE.md`](REPRODUCE.md). The upstream
+> project README follows.
+
 <!-- ───────────────────────── Challenge banner ─────────────────────────
      Files: assets/challenge-banner.svg (dark card) + assets/challenge-banner-light.svg.
      Both are self-contained (text outlined to paths, no fonts/scripts/external refs),
