@@ -45,6 +45,8 @@ studies/*/
 !studies/consumer_confidence_us_backtest/
 !studies/hisim_roe/
 !studies/germany_auto_market/
+# EVOLUTICS Track C study (ship it):
+!studies/persona_override/
 
 # --- Generated run artifacts (never shipped, even for whitelisted studies) ---
 studies/*/runs/
@@ -70,3 +72,8 @@ dashboard/web/v2next/
 
 # --- Optional deep-research skill: CC BY-NC 4.0, incompatible with this repo's Apache-2.0 ---
 .claude/skills/deep-research/
+
+# --- EVOLUTICS: local experiment logs / sweep outputs (not part of the shipped tree) ---
+/results_*.log
+/audit_*.json
+/audit_llm_sweep.log
