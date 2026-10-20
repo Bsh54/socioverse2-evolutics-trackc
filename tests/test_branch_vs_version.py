@@ -260,6 +260,66 @@ def test_missing_parent_snapshot_downgrades(tmp_path):
     assert not rep["ok"] and rep["downgraded"]
 
 
+def test_missing_parent_trajectory_store_downgrades(tmp_path):
+    """The silent-degradation defect: the parent's snapshot DIRECTORY survives (P / f / E all
+    match, so every file invariant passes) but its trajectory store — the one thing sv-run
+    actually replays — is gone. That is reachable in normal use: ``versions/`` and ``*.duckdb``
+    are gitignored, so a moved / re-cloned workspace, or a pruned run, keeps the committed
+    artifacts while dropping the parent's realized history. Before the fix ``check_branch_invariant``
+    still returned ``ok=True`` (it only tested that the snapshot *directory* existed) and
+    ``resolve_warm_start`` then returned ``None`` SILENTLY, so the branch cold-ran from step 0 as an
+    UNPAIRED treatment arm with no error and no audit record. It must be caught and downgraded like
+    every other broken branch contract, with the reason kept for the audit trail."""
+    root = _seed(scaffold(tmp_path, "s1"))
+    create_branch(root, "campaign at 5", fork_step=5)
+    _add_broadcast(root, at_step=5)                          # a perfectly valid branch edit
+    traj = root / "versions" / "v1" / "trajectory" / "study.duckdb"
+    assert traj.exists()                                     # parent history was archived
+    traj.unlink()                                            # only the replay source disappears
+    assert (root / "versions" / "v1").is_dir()               # dir survives → the old dir-only check passed
+    rep = check_branch_invariant(root)
+    assert not rep["ok"] and rep["downgraded"] and rep["kind"] == "version"
+    assert any("trajectory store" in v for v in rep["violations"])
+    e = version_entry(root)
+    assert e["kind"] == "version" and e["warm_start"] is None and e["fork_step"] is None
+    assert e["downgraded_from_branch"]["violations"]         # the reason survives for the audit trail
+    # and the run path now refuses to serve it as a branch — None for the RIGHT, recorded reason
+    assert resolve_warm_start(root) is None
+
+
+def test_parent_trajectory_too_short_for_fork_step_downgrades(tmp_path):
+    """Second facet of the same defect: the parent store EXISTS but records fewer steps than the
+    branch inherits. The engine replays each inherited step from the parent panel and silently
+    replays an EMPTY step for any the parent never ran — so a branch forked beyond the parent's
+    realized horizon is unpaired on the uncovered steps with no error. The invariant must require
+    the parent to cover resume_from steps. (Uses a real minimal duckdb panel so the coverage read
+    runs; text-stub stores in other tests read as unknown coverage and are left to the file check.)"""
+    duckdb = pytest.importorskip("duckdb")
+    root = _seed(scaffold(tmp_path, "s1"))
+    create_branch(root, "fork at step 9", fork_step=9)          # inherits steps 1..8
+    traj = root / "versions" / "v1" / "trajectory" / "study.duckdb"
+    traj.unlink()                                               # replace the text stub with a real db
+    con = duckdb.connect(str(traj))
+    con.sql("CREATE TABLE panel(step INTEGER, agent_id TEXT)")
+    con.sql("INSERT INTO panel VALUES (0,'a1'),(1,'a1'),(2,'a1'),(3,'a1')")   # parent ran only 3 steps
+    con.close()
+    rep = check_branch_invariant(root)
+    assert not rep["ok"] and rep["downgraded"] and rep["kind"] == "version"
+    assert any("records only up to step 3" in v and "inherits 8" in v for v in rep["violations"])
+
+
+def test_valid_branch_still_resolves_when_parent_trajectory_present(tmp_path):
+    """Guard against over-correction: the fix must not reject a healthy branch. With the parent's
+    trajectory store present and a legal post-fork edit, the branch stays a branch and resolves."""
+    root = _seed(scaffold(tmp_path, "s1"))
+    create_branch(root, "campaign at 5", fork_step=5)
+    _add_broadcast(root, at_step=5)
+    rep = check_branch_invariant(root)
+    assert rep["ok"] and rep["kind"] == "branch" and not rep["downgraded"]
+    ws = resolve_warm_start(root)
+    assert ws["source_version"] == "v1" and ws["resume_from"] == 4
+
+
 def test_a_version_is_never_checked(tmp_path):
     root = _seed(scaffold(tmp_path, "s1"))
     create_version(root, "v2: new population", resume_from_stage="sv-build-population")

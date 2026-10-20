@@ -479,6 +479,31 @@ def _env_history(env: dict | None, fork_step: int) -> dict | None:
             "broadcasts": before((env.get("information_program") or {}).get("broadcasts"))}
 
 
+def _parent_step_coverage(traj_path: Path) -> int | None:
+    """Highest step recorded in a parent trajectory's ``panel``, or ``None`` when it cannot be
+    determined (store is not a readable duckdb, no ``panel`` table / ``step`` column, empty panel).
+
+    A branch replays the parent's steps ``1..resume_from``; the engine draws each replayed step's
+    actions from the parent panel and, for a step the parent never recorded, silently replays an
+    EMPTY step (no error). So the invariant must also check that the parent actually covers
+    ``resume_from`` steps. Callers MUST fail open on ``None`` — never downgrade a branch merely
+    because coverage could not be read — so a non-duckdb or unusual store is not falsely rejected
+    (the file-existence check already guarantees the replay source is present and non-empty)."""
+    p = str(traj_path)
+    if not p.endswith(".duckdb"):
+        return None
+    try:
+        import duckdb                                   # local import: keep sv_workspace decoupled
+        con = duckdb.connect(p, read_only=True)
+        try:
+            row = con.sql("SELECT MAX(step) FROM panel").fetchone()
+        finally:
+            con.close()
+        return int(row[0]) if row and row[0] is not None else None
+    except Exception:
+        return None
+
+
 def check_branch_invariant(study_dir: str | Path, *, version_id: str | None = None,
                            downgrade: bool = True) -> dict:
     """Verify that the current version really is a branch, and downgrade it to a version if not.
@@ -516,6 +541,30 @@ def check_branch_invariant(study_dir: str | Path, *, version_id: str | None = No
         if not snap.is_dir():
             violations.append(f"the snapshot of parent version {source} does not exist, so its history cannot be inherited")
         else:
+            # The snapshot DIRECTORY existing is not enough: sv-run replays the parent's realized
+            # history from its trajectory store, and that store (``*.duckdb``, like ``versions/``,
+            # is gitignored) can be absent while the committed artifacts survive — e.g. a branch
+            # snapshotted before its parent ran, or a moved / re-cloned / pruned workspace. Without
+            # this check the invariant passed, ``resolve_warm_start`` returned ``None`` SILENTLY, and
+            # the branch cold-ran from step 0 as an unpaired arm with no warning and no audit record.
+            src_traj = version_trajectory_db(d, source)
+            if not src_traj.is_file() or src_traj.stat().st_size == 0:
+                violations.append(
+                    f"the trajectory store of parent version {source} "
+                    f"({src_traj.relative_to(d).as_posix()}) is missing or empty, so its realized "
+                    "history cannot be replayed — the branch would cold-run unpaired from step 0")
+            else:
+                # The store exists, but it must also COVER the steps this branch inherits: the
+                # engine replays steps 1..resume_from from the parent panel and silently replays an
+                # EMPTY step for any the parent never recorded. (Fail open when coverage is unknown.)
+                resume_from = int((ws or {}).get("resume_from", 0))
+                cov = _parent_step_coverage(src_traj)
+                if cov is not None and cov < resume_from:
+                    violations.append(
+                        f"the trajectory store of parent version {source} records only up to step "
+                        f"{cov}, but this branch inherits {resume_from} step(s) (fork step "
+                        f"{fork_step}); the uncovered steps would be replayed as empty — re-run the "
+                        f"parent through at least step {resume_from} before branching")
             for rel, label in BRANCH_INVARIANT_FILES:
                 live_p, snap_p = d / rel, snap / rel
                 if live_p.suffix == ".json":
