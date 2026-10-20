@@ -40,4 +40,9 @@ class Action(BaseModel):
     kind: str                                       # move | stay | post | reply | adopt_opinion | ...
     payload: dict[str, Any] = Field(default_factory=dict)
     rationale: list[str] = Field(default_factory=list)
-    source: Literal["llm", "rule", "fallback", "replay"] = "llm"  # replay = branch replay (inherited from the parent version)
+    # llm = the model decided; rule = a scripted/rule decision; fallback = the LLM ran but its
+    # output was unusable so the rule was substituted; replay = branch replay (inherited from the
+    # parent version); error = the request raised/failed and the rule was substituted. Without
+    # "error", a decision model that records a failed request crashes on Action construction
+    # instead of logging it, which hides request failures from the provenance audit.
+    source: Literal["llm", "rule", "fallback", "replay", "error"] = "llm"
