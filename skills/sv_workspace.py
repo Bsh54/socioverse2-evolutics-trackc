@@ -144,8 +144,10 @@ def fork_study(
         if not p.exists():
             continue
         try:
-            obj = json.loads(p.read_text())
-        except (json.JSONDecodeError, OSError):
+            obj = json.loads(p.read_text(encoding="utf-8"))   # match the UTF-8 write below;
+            # a bare read_text() uses the locale codec (cp1252 on Windows) and silently corrupts
+            # non-ASCII artifact content (e.g. the shipped Chinese reports) on every fork.
+        except (json.JSONDecodeError, OSError, UnicodeError):
             continue
         if isinstance(obj, dict) and obj.get("study_id") not in (None, new_study_id):
             obj["study_id"] = new_study_id
