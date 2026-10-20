@@ -25,9 +25,10 @@ the run-instructions README required for a Track C entry that modifies code outs
 
 ## 2. The platform changes (what we modified outside studies/)
 
-Three contributions to the platform (code outside `studies/`): **(2a)** a fix to the
-branch-integrity guarantee, **(2b)** a fix to a fork encoding bug, and **(2c)** a new reusable
-validity-audit collector. Each is minimal, tested, and independent.
+Four contributions to the platform (code outside `studies/`): **(2a)** a fix to the
+branch-integrity guarantee, **(2b)** a fix to a fork encoding bug, **(2c)** a new reusable
+validity-audit collector, and **(2d)** a provenance-schema fix. Each is minimal, tested, and
+independent.
 
 ### 2a. Branch-replay silent-degradation fix
 
@@ -108,6 +109,15 @@ catches a frozen population). Tests: `tests/test_audit_collector.py`. Reusabilit
 it was not written for (`../probe/audit_collector_demo.py`) and across three shipped validation
 studies (`../probe/audit_breadth.py`), unchanged.
 
+### 2d. Action provenance schema fix
+
+**File:** `socioverse/schemas/runtime.py`, `Action.source`. The provenance enum listed
+`llm / rule / fallback / replay` but not the case where a decision request raised or failed and the
+rule was substituted. A decision model that recorded that (`source="error"`) crashed on `Action`
+construction with a `ValidationError` instead of logging it — so transient request failures were
+invisible to the provenance audit and could abort a live run on the first error. `"error"` is now a
+valid source. Test: `tests/test_action_provenance.py`.
+
 ## 3. Reproduction (one command, no key, deterministic, free)
 
 ```bash
@@ -141,8 +151,9 @@ live-LLM figures, and the known cosmetic failures are in **`REPRODUCE.md`**.
 
 - `skills/sv_workspace.py` — the two platform fixes (§2a branch-integrity, §2b fork encoding).
 - `socioverse/diagnostics.py` — the new reusable audit collector (§2c).
-- `tests/test_branch_vs_version.py`, `tests/test_audit_collector.py`, `tests/test_fork_encoding.py`
-  — the regression/unit tests for the three contributions.
+- `socioverse/schemas/runtime.py` — the Action provenance fix (§2d).
+- `tests/test_branch_vs_version.py`, `tests/test_audit_collector.py`, `tests/test_fork_encoding.py`,
+  `tests/test_action_provenance.py` — the regression/unit tests for the four contributions.
 - `reproduce.py`, `REPRODUCE.md` — one-command repro (7 stages) + statements (§3).
 - `studies/persona_override/` — the from-scratch study (model/run/README + materialized artifacts +
   saved results, including the live-LLM runs).
