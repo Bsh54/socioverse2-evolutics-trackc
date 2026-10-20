@@ -77,3 +77,6 @@ dashboard/web/v2next/
 /results_*.log
 /audit_*.json
 /audit_llm_sweep.log
+# Persona-pool data pulled from the user-pool MCP (matraix_1m): licence not declared upstream,
+# used for research/demo only and NOT redistributed (see REPRODUCE.md data-compliance statement).
+studies/persona_override/real_personas.json

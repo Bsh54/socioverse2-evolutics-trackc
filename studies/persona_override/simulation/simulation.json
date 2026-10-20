@@ -1,0 +1,19 @@
+{
+  "study_id": "persona_override",
+  "n_steps": 10,
+  "seed": 0,
+  "warm_start": null,
+  "decision_ref": "po.decision",
+  "decision_args": {
+    "llm_kind": "scripted",
+    "use_persona": true,
+    "n_options": 2,
+    "model": null
+  },
+  "collector_ref": "po.collector",
+  "collector_args": {},
+  "interaction_rounds": 1,
+  "engine_args": {},
+  "store_ref": "duckdb",
+  "store_args": {}
+}

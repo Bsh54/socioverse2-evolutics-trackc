@@ -1,0 +1,251 @@
+{
+  "tag": "scale200_scripted",
+  "mode": "rule",
+  "config": {
+    "n_agents": 200,
+    "n_options": 2,
+    "n_steps": 6,
+    "persona": true,
+    "persona_mode": null,
+    "async_update": false,
+    "flip_step": null,
+    "flip_count": 0
+  },
+  "model": null,
+  "runs": [
+    {
+      "seed": 0,
+      "elapsed_s": 3.3,
+      "trajectory": [
+        {
+          "step": 0,
+          "choice_entropy": 0.6927,
+          "churn": 0.0,
+          "trait_alignment": 0.505,
+          "llm_decisions": 0,
+          "rule_fallbacks": 0,
+          "parse_failure_rate": 0.0
+        },
+        {
+          "step": 1,
+          "choice_entropy": 0.6891,
+          "churn": 0.16,
+          "trait_alignment": 0.495,
+          "llm_decisions": 0,
+          "rule_fallbacks": 0,
+          "parse_failure_rate": 0.0
+        },
+        {
+          "step": 2,
+          "choice_entropy": 0.6891,
+          "churn": 0.0,
+          "trait_alignment": 0.495,
+          "llm_decisions": 0,
+          "rule_fallbacks": 0,
+          "parse_failure_rate": 0.0
+        },
+        {
+          "step": 3,
+          "choice_entropy": 0.6891,
+          "churn": 0.0,
+          "trait_alignment": 0.495,
+          "llm_decisions": 0,
+          "rule_fallbacks": 0,
+          "parse_failure_rate": 0.0
+        },
+        {
+          "step": 4,
+          "choice_entropy": 0.6891,
+          "churn": 0.0,
+          "trait_alignment": 0.495,
+          "llm_decisions": 0,
+          "rule_fallbacks": 0,
+          "parse_failure_rate": 0.0
+        },
+        {
+          "step": 5,
+          "choice_entropy": 0.6891,
+          "churn": 0.0,
+          "trait_alignment": 0.495,
+          "llm_decisions": 0,
+          "rule_fallbacks": 0,
+          "parse_failure_rate": 0.0
+        },
+        {
+          "step": 6,
+          "choice_entropy": 0.6891,
+          "churn": 0.0,
+          "trait_alignment": 0.495,
+          "llm_decisions": 0,
+          "rule_fallbacks": 0,
+          "parse_failure_rate": 0.0
+        }
+      ],
+      "summary": {
+        "final_churn": 0.0,
+        "mean_churn_post2": 0.0,
+        "final_alignment": 0.495,
+        "final_entropy": 0.6891,
+        "llm_calls": 0,
+        "fallbacks": 0,
+        "max_parse_fail": 0.0
+      }
+    },
+    {
+      "seed": 1,
+      "elapsed_s": 1.7,
+      "trajectory": [
+        {
+          "step": 0,
+          "choice_entropy": 0.6929,
+          "churn": 0.0,
+          "trait_alignment": 0.5,
+          "llm_decisions": 0,
+          "rule_fallbacks": 0,
+          "parse_failure_rate": 0.0
+        },
+        {
+          "step": 1,
+          "choice_entropy": 0.6913,
+          "churn": 0.16,
+          "trait_alignment": 0.5,
+          "llm_decisions": 0,
+          "rule_fallbacks": 0,
+          "parse_failure_rate": 0.0
+        },
+        {
+          "step": 2,
+          "choice_entropy": 0.6913,
+          "churn": 0.0,
+          "trait_alignment": 0.5,
+          "llm_decisions": 0,
+          "rule_fallbacks": 0,
+          "parse_failure_rate": 0.0
+        },
+        {
+          "step": 3,
+          "choice_entropy": 0.6913,
+          "churn": 0.0,
+          "trait_alignment": 0.5,
+          "llm_decisions": 0,
+          "rule_fallbacks": 0,
+          "parse_failure_rate": 0.0
+        },
+        {
+          "step": 4,
+          "choice_entropy": 0.6913,
+          "churn": 0.0,
+          "trait_alignment": 0.5,
+          "llm_decisions": 0,
+          "rule_fallbacks": 0,
+          "parse_failure_rate": 0.0
+        },
+        {
+          "step": 5,
+          "choice_entropy": 0.6913,
+          "churn": 0.0,
+          "trait_alignment": 0.5,
+          "llm_decisions": 0,
+          "rule_fallbacks": 0,
+          "parse_failure_rate": 0.0
+        },
+        {
+          "step": 6,
+          "choice_entropy": 0.6913,
+          "churn": 0.0,
+          "trait_alignment": 0.5,
+          "llm_decisions": 0,
+          "rule_fallbacks": 0,
+          "parse_failure_rate": 0.0
+        }
+      ],
+      "summary": {
+        "final_churn": 0.0,
+        "mean_churn_post2": 0.0,
+        "final_alignment": 0.5,
+        "final_entropy": 0.6913,
+        "llm_calls": 0,
+        "fallbacks": 0,
+        "max_parse_fail": 0.0
+      }
+    },
+    {
+      "seed": 2,
+      "elapsed_s": 1.8,
+      "trajectory": [
+        {
+          "step": 0,
+          "choice_entropy": 0.6929,
+          "churn": 0.0,
+          "trait_alignment": 0.5,
+          "llm_decisions": 0,
+          "rule_fallbacks": 0,
+          "parse_failure_rate": 0.0
+        },
+        {
+          "step": 1,
+          "choice_entropy": 0.6913,
+          "churn": 0.16,
+          "trait_alignment": 0.5,
+          "llm_decisions": 0,
+          "rule_fallbacks": 0,
+          "parse_failure_rate": 0.0
+        },
+        {
+          "step": 2,
+          "choice_entropy": 0.6913,
+          "churn": 0.0,
+          "trait_alignment": 0.5,
+          "llm_decisions": 0,
+          "rule_fallbacks": 0,
+          "parse_failure_rate": 0.0
+        },
+        {
+          "step": 3,
+          "choice_entropy": 0.6913,
+          "churn": 0.0,
+          "trait_alignment": 0.5,
+          "llm_decisions": 0,
+          "rule_fallbacks": 0,
+          "parse_failure_rate": 0.0
+        },
+        {
+          "step": 4,
+          "choice_entropy": 0.6913,
+          "churn": 0.0,
+          "trait_alignment": 0.5,
+          "llm_decisions": 0,
+          "rule_fallbacks": 0,
+          "parse_failure_rate": 0.0
+        },
+        {
+          "step": 5,
+          "choice_entropy": 0.6913,
+          "churn": 0.0,
+          "trait_alignment": 0.5,
+          "llm_decisions": 0,
+          "rule_fallbacks": 0,
+          "parse_failure_rate": 0.0
+        },
+        {
+          "step": 6,
+          "choice_entropy": 0.6913,
+          "churn": 0.0,
+          "trait_alignment": 0.5,
+          "llm_decisions": 0,
+          "rule_fallbacks": 0,
+          "parse_failure_rate": 0.0
+        }
+      ],
+      "summary": {
+        "final_churn": 0.0,
+        "mean_churn_post2": 0.0,
+        "final_alignment": 0.5,
+        "final_entropy": 0.6913,
+        "llm_calls": 0,
+        "fallbacks": 0,
+        "max_parse_fail": 0.0
+      }
+    }
+  ]
+}

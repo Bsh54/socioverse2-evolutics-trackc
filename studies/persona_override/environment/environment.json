@@ -1,0 +1,24 @@
+{
+  "study_id": "persona_override",
+  "layers": [
+    {
+      "name": "neighbor_choices",
+      "modality": "physical",
+      "scope": "local",
+      "dynamics": "endogenous",
+      "source": null,
+      "schema_ref": null,
+      "description": "ring neighbours' current choices"
+    }
+  ],
+  "scheduled_events": [],
+  "information_program": {
+    "broadcasts": []
+  },
+  "provider_ref": "po.env",
+  "provider_args": {
+    "n_agents": 20,
+    "n_options": 2,
+    "async_update": false
+  }
+}

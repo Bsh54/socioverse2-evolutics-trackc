@@ -1,0 +1,97 @@
+{
+  "study_id": "persona_override",
+  "personas": [],
+  "interaction": {
+    "kind": "explicit_network",
+    "edges": [
+      [
+        "po-000",
+        "po-001"
+      ],
+      [
+        "po-001",
+        "po-002"
+      ],
+      [
+        "po-002",
+        "po-003"
+      ],
+      [
+        "po-003",
+        "po-004"
+      ],
+      [
+        "po-004",
+        "po-005"
+      ],
+      [
+        "po-005",
+        "po-006"
+      ],
+      [
+        "po-006",
+        "po-007"
+      ],
+      [
+        "po-007",
+        "po-008"
+      ],
+      [
+        "po-008",
+        "po-009"
+      ],
+      [
+        "po-009",
+        "po-010"
+      ],
+      [
+        "po-010",
+        "po-011"
+      ],
+      [
+        "po-011",
+        "po-012"
+      ],
+      [
+        "po-012",
+        "po-013"
+      ],
+      [
+        "po-013",
+        "po-014"
+      ],
+      [
+        "po-014",
+        "po-015"
+      ],
+      [
+        "po-015",
+        "po-016"
+      ],
+      [
+        "po-016",
+        "po-017"
+      ],
+      [
+        "po-017",
+        "po-018"
+      ],
+      [
+        "po-018",
+        "po-019"
+      ],
+      [
+        "po-019",
+        "po-000"
+      ]
+    ],
+    "adjacency_ref": null
+  },
+  "propagation": "contagion",
+  "provider_ref": "po.pop",
+  "provider_args": {
+    "n_agents": 20,
+    "n_options": 2
+  },
+  "materialized_count": null
+}

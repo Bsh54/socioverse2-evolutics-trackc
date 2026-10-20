@@ -1,0 +1,10 @@
+{
+  "study_id": "persona_override",
+  "facts": [],
+  "assumptions": [
+    {
+      "id": "a1",
+      "text": "Stylised k-option ring; no real-world anchor. The claim is mechanistic (persona vs. neighbour information), not an effect size."
+    }
+  ]
+}
